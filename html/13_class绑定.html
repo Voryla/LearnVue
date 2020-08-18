@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+    <style>
+        div {
+            color: #ffffff;
+        }
+
+        .static {
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            margin-bottom: 10px;
+        }
+
+        .active {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+<!-- 对象语法 传递一个{}对象再更改对象里的值  结构:{ className: booleanProperty }，而且vue的对象语法和html的class可以同时存在-->
+<div id="app1" class="static" v-bind:class="{ active: isActive}">对象语法</div>
+<!-- 对象语法 放入一个对象属性，对象属性中包含{ active: true,static: true} 效果相同，写法不同-->
+<div id="app2" v-bind:class="classObject">对象名对象语法</div>
+<!-- 也可以使用计算属性 这是一个非常强大的模式-->
+<div id="app3" v-bind:class="classObject">计算属性</div>
+
+<!-- 数组语法-->
+<div id="app4" v-bind:class="[staticClass,activeClass]">数组语法</div>
+<!-- 设置条件的数组语法 这样写将始终添加 errorClass，但是只有在 isActive 是 true 时才添加 activeClass。三元运算:isActive ? activeClass : ''-->
+<div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+<!--组合语法:不过，当有多个条件 class 时这样写有些繁琐。所以在数组语法中也可以使用对象语法：-->
+<div v-bind:class="[{ active: isActive,static: isStatic }, errorClass]"></div>
+
+
+<!-- 上面两种语法同时可以用在组件上-->
+<div id="app5">
+    <my-component v-bind:class="[{active: isActive},staticClass]"></my-component>
+</div>
+<script>
+    // 基本对象语法
+    var app1 = new Vue({
+        el: '#app1',
+        data: {
+            // 对象语法通过boolean属性决定是否应用class
+            isActive: true,
+        }
+    });
+    // 指定data中对象名的对象语法
+    var app2 = new Vue({
+        el: '#app2',
+        data: {
+            classObject: {
+                active: true,
+                static: true
+            }
+        }
+    });
+    app2.$data.classObject.active = false;
+    // 使用计算属性
+    var app3 = new Vue({
+        el: '#app3',
+        data: {
+            isActive: true,
+            error: null
+        },
+        computed: {
+            // 使用计算属性的好处是可以对变量进行一些条件判断的处理，而且在data中变量改变时，计算属性能随之改变
+            classObject: function () {
+                return {
+                    static: this.isActive && !this.error,
+                    active: this.error && this.error.type === 'fatal'
+                }
+            }
+        }
+    });
+    // 使用数组语法
+    var app4 = new Vue({
+        el: '#app4',
+        data: {
+            staticClass: 'static',
+            activeClass: 'active'
+        }
+    });
+    // 在组件上的使用
+    // Vue.component('my-component',{
+    //     template:'<button>Hi</button>'
+    // });
+    // 由于 <my-component class="static active"></my-component> 中有class 最终p的class为 static active foo bar
+    Vue.component('my-component', {
+        template: '<p class="foo bar">Hi</p>'
+    })
+    new Vue({
+        el: '#app5',
+        data: {isActive: true,staticClass:'static'}
+    });
+</script>
+</body>
+
+</html>

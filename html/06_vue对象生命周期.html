@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <p>{{message}}</p>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: "hello vue.js"
+        },
+        // 在实例化之后，数据观测(data observer)和 event/watcher 事件配置之前被调用  events&lifecycle
+        beforeCreate: function () {
+            console.log('beforeCreate');
+        },
+        // 在实例创建完成后被立即调用 injections reactivity
+        // 在这一步，实例已完成以下的配置：数据观测(data observer)，属性和方法的运算，watch/event事件的回调
+        // 然而，挂载阶段还没开始，$el属性目前不可见,若此时调用$el值为undefined
+        created: function () {
+            console.log('created');
+        },
+        // 在挂载开始之前被调用:相关的渲染函数首次被调用
+        beforeMount: function () {
+            console.log('beforeMount');
+        },
+        // el 被选创建的$el 替换，挂载成功
+        mounted: function () {
+            console.log('mounted');
+        },
+        // 数据更新时调用
+        beforeUpdate: function () {
+            console.log('beforeUpdate');
+        },
+        // 组件DOM已经更新，组件更新完毕
+        updated: function () {
+            console.log('updated');
+        },
+        // 实例销毁之前调用
+        beforeDestroy: function () {
+            console.log('beforeDestroy');
+        },
+        // 实例销毁后调用
+        destroyed: function () {
+            console.log('destroyed');
+        }
+    });
+</script>
+</body>
+
+</html>

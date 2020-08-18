@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <!-- 使用自定义的属性title-->
+    <button-counter @click_now="click_now" title="title">
+        <!-- 这就是slot槽的使用,如果template中去除slot h2标签将不会显示-->
+        <h2>h2...</h2>
+    </button-counter>
+</div>
+<script type="text/javascript">
+    Vue.component('button-counter', {
+        // 为组件创建一个新属性
+        props: ['title'],
+        //
+        data: function () {
+            return {
+                count: 0
+            }
+        },
+        // slot插槽可以在使用组件的时候插入html
+        template: '<button v-on:click="click_fun">{{title}}you clicked me {{count}} times<slot></slot></button>',
+        methods: {
+            click_fun: function () {
+                console.log("进入组件")
+                this.count++;
+                // 插入函数调用
+                this.$emit('click_now', this.count);
+                console.log("调用组件的事件");
+            }
+        }
+    })
+    // new Vue一定要在注册组件之后调用
+    var vm = new Vue({
+        el: '#app',
+        data: {},
+        methods: {
+            click_now: function (v) {
+                console.log("组件的事件调用中");
+                console.log(v);
+            }
+        }
+    });
+</script>
+</body>
+</html>

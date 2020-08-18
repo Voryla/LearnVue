@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<!-- 文本插值-->
+<div id="app1">
+    <span>Message :{{msg}}</span>
+</div>
+<div id="app2">
+    <!-- v-once指令控制一次性插值-->
+    <span v-once>{{msg}}</span>
+</div>
+<!-- 原始HTML-->
+<div id="app3">
+    <!-- 双大括号会将数据解释为普通文本，而非 HTML 代码。为了输出真正的 HTML，你需要使用 v-html 指令：
+    注意：你的站点上动态渲染的任意 HTML 可能会非常危险，因为它很容易导致 XSS 攻击。请只对可信内容使用 HTML 插值，绝不要对用户提供的内容使用插值。-->
+    <p>Using mustaches: {{ rawHtml }}</p>
+    <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+</div>
+<script>
+    var app1 = new Vue({
+        el: '#app1',
+        // Mustache 标签将会被替代为对应数据对象上 msg property 的值。无论何时，绑定的数据对象上 msg property 发生了改变，插值处的内容都会更新。
+        data: {
+            msg: '这是文本插值'
+        }
+    });
+
+    var app2 = new Vue({
+        el: '#app2',
+        // 通过使用 v-once 指令，你也能执行一次性地插值，当数据改变时，插值处的内容不会更新。但请留心这会影响到该节点上的其它数据绑定：
+        data: {
+            msg: "v-once指令执行一次性的插值，后续更改值无效"
+        }
+    });
+
+    var app3 = new Vue({
+        el: '#app3',
+        data: {
+            // 当接收处为mustaches(双括号)语法时，直接显示为文本，当标签使用v-html标记时，内容中含有的html代码会被转换成html元素
+            rawHtml: "<span style='color: red'>this should be red.</span>"
+        }
+    });
+</script>
+</body>
+
+</html>

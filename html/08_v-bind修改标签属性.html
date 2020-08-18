@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<!-- Mustache 语法不能作用在HTML attribute上，遇到这种情况应该使用v-bind指令-->
+<div v-bind:id="dynamicId"></div>
+<!-- 对于布尔attribute(它们只要存在就意味着值为：true)，v-bind 工作起来略有不同，在下面这个例子中，如果isButtonDisabled的值是null、undefined、false，
+     则disabled attribute甚至不会被包含在渲染出来的<button>元素中-->
+<button v-bind:disabled="isButtonDisabled" v-on:click="func">hello vue.js</button>
+<script>
+    var div_ = new Vue({
+        el: 'div',
+        data: {
+            dynamicId: 'div1'
+        }
+    });
+    var button_ = new Vue({
+        el: 'button',
+        data: {
+            isButtonDisabled: false
+        },
+        methods:{
+            func: function () {
+                console.log(this.isButtonDisabled);
+            }
+        }
+
+    });
+</script>
+</body>
+
+</html>

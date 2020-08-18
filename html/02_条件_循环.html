@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- v-if关键字控制元素的显示/隐藏-->
+    <div id="app3">
+        <p v-if="seen"> 现在你可以看见我了</p>
+    </div>
+    <!-- v-for循环处理 -->
+    <div id="app4">
+        <ol>
+            <li v-for="todo in todo_list">
+                {{todo.text}}
+            </li>
+        </ol>
+    </div>
+    <script>
+        // 切换 显示/隐藏 控制台app3.seen = false就会隐藏元素了
+        var app3 = new Vue({
+            el: "#app3",
+            data: {
+                seen: true,
+            }
+        });
+        // 循环处理  在控制台中输入app4.todo_list.push({ text: '新项目' })会添加一个新项目
+        var app4 = new Vue({
+            el: "#app4",
+            data: {
+                todo_list: [
+                    { text: '学习 JavaScript' },
+                    { text: '学习 Vue' },
+                    { text: '学习 整个牛项目' }
+                ]
+            }
+        });
+// 当向控制台输入app3.seen=false;时 p元素将隐藏
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- -->
+    <div id="app1">
+        {{message}}
+    </div>
+    <span id="app2" v-bind:title="message">鼠标悬停查看效果</span>
+    <script>
+        var app1 = new Vue({
+            // 选择器
+            el: '#app1',
+            data: {
+                message: "hello vue"
+            }
+        });
+        var app2 = new Vue({
+            el: "#app2",
+            data: {
+                // v-bind:title提供绑定
+                message: "页面加载于: +" + new Date().toDateString()
+            },
+            watch:{
+
+            }
+        });
+        //
+        console.log(app1.$el === document.getElementById("app1"));// output true
+        // 可以使用对象变量.$el/.$data获取其中的属性
+        console.log(app1.$data.message);
+        // vue提供的$watch方法可以检测变量的改变
+        app1.$watch('message', function (newValue, oldValue) {
+            console.log(newValue + oldValue);
+        });
+    </script>
+</body>
+
+</html>

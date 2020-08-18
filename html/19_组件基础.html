@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<div id="app1">
+    <button-counter></button-counter>
+    <blog-post title="My journey with Vue" time="2020.8.18"></blog-post>
+    <blog-post title="Blogging with Vue" time="2020.8.19"></blog-post>
+    <blog-post title="Why Vue is so fun" time="2020.8.20"></blog-post>
+
+    <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:title="post.title"
+            v-bind:time="post.time"
+    ></blog-post>
+    <!-- 如上所示，你会发现我们可以使用 v-bind 来动态传递 prop。这在你一开始不清楚要渲染的具体内容，比如从一个 API 获取博文列表的时候，是非常有用的。-->
+
+    <!-- -->
+    <blog-posts
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+    ></blog-posts>
+
+    <div v-bind:style="{fontSize:postFontSize + 'em'}">
+        <blog-posts
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post"
+                v-on:enlarge-text="postFontSize += 0.1"
+        ></blog-posts>
+    </div>
+    <div v-bind:style="{fontSize:postFontSize + 'em'}">
+        <blog-posts
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post"
+                v-on:enlarge-text="onEnlargeText"
+        ></blog-posts>
+    </div>
+    <!-- 使用v-model-->
+    <custom-input v-model="searchText"></custom-input>
+    <br>
+    <!-- -->
+    <alert-box v-bind:my_style="demo_alert_box">
+        <!-- template组件中添加<slot></slot>-->
+        Something bad happened.
+    </alert-box>
+</div>
+<!-- vue 操作代码要放在body后，因为操作dom要等到dom加载之后添加-->
+<script type="text/javascript" src="../js/19_组件基础.js"></script>
+</body>
+
+</html>

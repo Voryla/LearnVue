@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+<!-- 我们可以用 v-for 指令基于一个数组来渲染一个列表。v-for 指令需要使用 item in items 形式的特殊语法，其中 items 是源数据数组，而 item 则是被迭代的数组元素的别名。
+     可以使用of替代in这样更接近JavaScript迭代器的用法-->
+<ul id="app1">
+    <li v-for="item in items" v-bind:key="item.message">
+        {{item.message}}
+    </li>
+</ul>
+<!-- 在 v-for 块中，我们可以访问所有父作用域的 property。v-for 还支持一个可选的第二个参数，即当前项的索引。-->
+<ul id="app2">
+    <li v-for="(item,index) in items">
+        {{parentMessage}}-{{index}}-{{item.Message}}
+    </li>
+</ul>
+<!------------------------------------------------------------------------------------------------------------------>
+<!-- 再v-for中使用对象，注意：参数顺序不得改变-->
+<ul id="app3">
+    <li v-for="value in object">
+        {{value}}
+    </li>
+</ul>
+<!-- 两个参数时 参数一：value 参数二：对应的property名称-->
+<ul id="app4">
+    <li v-for="(value,name) in object">
+        {{name}}：{{value}}
+    </li>
+</ul>
+<!-- 三个参数时: 参数一：value 参数二：对应的property名称 参数三：index-->
+<ul id="app5">
+    <li v-for="(value,name,index) in object" v-bind:key="index">
+        {{index}} {{name}}：{{value}}
+    </li>
+</ul>
+<!--在遍历对象时，会按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下都一致。-->
+<!-- 当 Vue 正在更新使用 v-for 渲染的元素列表时，它默认使用“就地更新”的策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序，
+而是就地更新每个元素，并且确保它们在每个索引位置正确渲染。
+这个默认的模式是高效的，但是只适用于不依赖子组件状态或临时 DOM 状态 (例如：表单输入值) 的列表渲染输出。
+为了给 Vue 一个提示，以便它能跟踪每个节点的身份，从而重用和重新排序现有元素，你需要为每项提供一个唯一 key attribute：
+建议尽可能在使用 v-for 时提供 key attribute，除非遍历输出的 DOM 内容非常简单，或者是刻意依赖默认行为以获取性能上的提升。-->
+<!----------------------------------------------------------------------------------------------------------->
+<!--自定义组件使用v-for-->
+<div id="app6">
+    <my-button-content v-for="item in items" v-bind:item="item"  v-bind:key="item.id">
+
+    </my-button-content>
+</div>
+
+<script>
+
+    Vue.component('my-button-content', {
+        props: ['item'],
+        template: '<button>{{item.message}}</button>'
+    });
+
+    var app1 = new Vue({
+        el: '#app1',
+        data: {
+            // 数组更新检测
+            // Vue将被侦听的数组的变更方法进行了包裹，所以它们也会触发视图更新，这些被包裹过的方法包括：
+            // push() pop() shift() unshift() splice() sort() reverse()
+            // 你可以打开控制台，然后对前面例子的 items 数组尝试调用变更方法。比如 app1.items.push({ message: 'Baz' })
+            /*
+            * 变更方法，顾名思义，会变更调用了这些方法的原始数组。相比之下，也有非变更方法，例如 filter()、concat() 和 slice()。
+            * 它们不会变更原始数组，而总是返回一个新数组。当使用非变更方法时，可以用新数组替换旧数组：
+
+            example1.items = example1.items.filter(function (item) {
+              return item.message.match(/Foo/)
+            })
+            你可能认为这将导致 Vue 丢弃现有 DOM 并重新渲染整个列表。幸运的是，事实并非如此。Vue 为了使得 DOM 元素得到最大范围的重用而实现了一些智能的启发式方法，
+            * 所以用一个含有相同元素的数组去替换原来的数组是非常高效的操作。
+            * */
+            items: [
+                {message: 'Foo'},
+                {message: 'Bar'}
+            ]
+        }
+    });
+    new Vue({
+        el: '#app2',
+        data: {
+            parentMessage: 'parent',
+            items: [
+                {Message: 'Foo'},
+                {Message: 'Bar'}
+            ]
+        }
+    });
+    new Vue({
+        el: '#app3',
+        data: {
+            object: {
+                title: 'How to do lists in Vue',
+                author: 'Jane Doe',
+                publishedAt: '2016-04-10'
+            }
+        }
+    });
+    new Vue({
+        el: '#app4',
+        data: {
+            object: {
+                title: 'How to do lists in Vue',
+                author: 'Jane Doe',
+                publishedAt: '2016-04-10'
+            }
+        }
+    });
+    new Vue({
+        el: '#app5',
+        data: {
+            object: {
+                title: 'How to do lists in Vue',
+                author: 'Jane Doe',
+                publishedAt: '2016-04-10'
+            }
+        }
+    });
+    new Vue({
+        el: '#app6',
+        data: {
+            items: [
+                {message: 'Green', id: '0'},
+                {message: 'Red', id: '2'}
+            ]
+        }
+    });
+</script>
+</body>
+
+</html>

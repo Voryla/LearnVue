@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入本地的vue-->
+    <script src="../js/vue.js"></script>
+    <style>
+        a{
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- v-bind 和 v-on的缩写-->
+<div id="app1">
+    <!-- v-bind缩写-->
+    <!-- 完整语法 -->
+    <a v-bind:href="url">v-bind完整写法 v-bind:href="url"</a>
+    <!-- 缩写 -->
+    <a :href="url">v-bind缩写 :href="url"</a>
+    <!-- 动态参数的缩写 (2.6.0+) -->
+    <a :[key]="url">v-bind动态参数缩写 :[key]="url"</a>
+    <!----------------------------------------------------------------->
+    <!-- v-on缩写-->
+    <a href="" v-on:click="doSomething">v-on完整写法 v-on:click="doSomething"</a>
+    <a href="" @click="doSomething">v-on缩写  @click="doSomething"</a>
+    <a href="" @[event_name]="doSomething">v-on动态参数缩写 @[event_name]="doSomething"</a>
+</div>
+<script>
+    var app1 = new Vue({
+        el: '#app1',
+        data: {
+            url: "http://www.baidu.com",
+            key: 'href',
+            event_name: 'click'
+        },
+        methods: {
+            doSomething: function () {
+                alert("doSomething");
+            }
+        }
+    });
+</script>
+</body>
+
+</html>
